@@ -1,0 +1,2 @@
+# Database-Design-and-Implementation-for-Global-Gadgets-Online-Retail-Store
+A comprehensive SQL Server-based database project designed for an online retail store (Global Gadgets). The database was developed using SQL Server Management Studio (SSMS), the project includes custom stored procedures, functions, and triggers which encapsulate and centralize business logic within the database and ensures data integrity.
