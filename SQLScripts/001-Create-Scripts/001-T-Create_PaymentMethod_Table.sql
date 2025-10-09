@@ -48,3 +48,8 @@ ALTER TABLE dbo.PaymentMethod
 ADD CONSTRAINT CK_PaymentMethod_MethodName_NotEmpty
     CHECK (LEN(LTRIM(RTRIM(method_name))) > 0)
 GO
+
+ALTER TABLE dbo.PaymentMethod 
+ADD CONSTRAINT CK_PaymentMethod_ValidValues
+    CHECK (method_name IN ('Credit Card', 'PayPal', 'Bank Transfer'))
+GO
