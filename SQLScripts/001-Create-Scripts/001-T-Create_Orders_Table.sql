@@ -14,12 +14,14 @@ GO
 
 CREATE TABLE [dbo].[Orders](
 
-    [order_id]        INT IDENTITY(20000,1)   NOT NULL,
-    [customer_id]     INT                     NOT NULL,
-    [order_date]      DATETIME                NOT NULL DEFAULT GETDATE(),
-    [shipping_method] NVARCHAR(50)            NOT NULL,
-    [status_id]       INT                     NOT NULL, -- FK to OrderStatus
-    [total_amount]    DECIMAL(10,2)           NOT NULL,
+ [order_id] [int] IDENTITY(20000,1) NOT NULL,
+	[customer_id] [int] NOT NULL,
+	[order_date] [datetime] NOT NULL,
+	[status_id] [int] NOT NULL,
+	[total_amount] [decimal](10, 2) NOT NULL,
+	[shipping_method_id] [int] NOT NULL,
+	[employee_id] [int] NULL,
+	[tracking_number] [nvarchar](50) NOT NULL,
 
     -- PK
     CONSTRAINT [PK_Orders_ID] PRIMARY KEY CLUSTERED 
@@ -28,28 +30,45 @@ CREATE TABLE [dbo].[Orders](
               IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
               ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
 
-    -- FK to Customer
-    CONSTRAINT [FK_Orders_Customer] FOREIGN KEY([customer_id])
-        REFERENCES [dbo].[Customer] ([customer_id])
-        ON DELETE CASCADE,
-
-    -- FK to Order Status
-    CONSTRAINT [FK_Orders_Status] FOREIGN KEY([status_id])
-        REFERENCES [dbo].[OrderStatus] ([status_id])
-) ON [PRIMARY]
+  ALTER TABLE [dbo].[Orders] ADD  DEFAULT (getdate()) FOR [order_date]
 GO
 
-----------------------------------------------------------------------
---===============| Adding CHECK Constraints |===============--
-
--- Total amount cannot be negative
-ALTER TABLE dbo.Orders
-ADD CONSTRAINT CK_Orders_TotalAmount
-    CHECK (total_amount >= 0)
+ALTER TABLE [dbo].[Orders] ADD  DEFAULT ((1)) FOR [shipping_method_id]
 GO
 
--- Shipping method must not be empty
-ALTER TABLE dbo.Orders
-ADD CONSTRAINT CK_Orders_ShippingMethod
-    CHECK (LEN(LTRIM(RTRIM(shipping_method))) > 0)
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_Customer] FOREIGN KEY([customer_id])
+REFERENCES [dbo].[Customers] ([customer_id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [FK_Orders_Customer]
+GO
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_Employees] FOREIGN KEY([employee_id])
+REFERENCES [dbo].[Employees] ([employee_id])
+ON UPDATE CASCADE
+ON DELETE SET NULL
+GO
+
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [FK_Orders_Employees]
+GO
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_ShippingMethod] FOREIGN KEY([shipping_method_id])
+REFERENCES [dbo].[ShippingMethod] ([shipping_method_id])
+GO
+
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [FK_Orders_ShippingMethod]
+GO
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_Status] FOREIGN KEY([status_id])
+REFERENCES [dbo].[OrderStatus] ([status_id])
+GO
+
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [FK_Orders_Status]
+GO
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [CK_Orders_TotalAmount] CHECK  (([total_amount]>=(0)))
+GO
+
+ALTER TABLE [dbo].[Orders] CHECK CONSTRAINT [CK_Orders_TotalAmount]
 GO
