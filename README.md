@@ -9,3 +9,5 @@ A comprehensive SQL Server-based database project designed for an online retail 
 - Automated Business Logic and Data Integrity Enforcement: Includes triggers (e.g., restocking inventory on order cancellation), stored procedures (e.g., searching products, updating suppliers), and constraints (e.g., positive prices, valid movement types). These ensure business rules are consistently applied and data remains accurate across all operations.
 ## Database Schema
 The GlobalGadgetsDB database, the operational foundation for the online retail business, is composed of 18 tables designed to manage everything from product listings and inventory to customer orders, payments, and administrative functions. Below is a visual representation of the database schema: 
+
+<img width="1450" height="840" alt="ERD_GLOBALGADGETSDB" src="https://github.com/user-attachments/assets/ae7b1d13-48a1-440c-9a25-1241cdcc313e" />
