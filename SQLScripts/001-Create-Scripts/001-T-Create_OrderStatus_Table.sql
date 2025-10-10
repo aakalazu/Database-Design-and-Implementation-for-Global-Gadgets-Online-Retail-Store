@@ -1,4 +1,4 @@
-USE [GLOBALGADGETS]
+USE [GlobalGadgetsDB]
 GO
 
 /****** Object:  Table [dbo].[OrderStatus]    Script Date: 10/1/2025  ******/
